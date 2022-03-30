@@ -15,7 +15,14 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-        // $schedule->command('inspire')->hourly();
+        $schedule->call(function () {
+            \Illuminate\Support\Facades\Artisan::call('schedule:work');
+        })->everyFourMinutes();
+
+        $schedule->call(function () {
+            DB::table('users_vote_posts')->truncate();
+        })->everyMinute();
+
     }
 
     /**
